@@ -1,4 +1,7 @@
 const { Storage } = require('@google-cloud/storage');
+const fs = require('fs');
+const path = require('path');
+let LOCAL_FOLDER_PATH = './local-folder/';  // Local folder where files will be saved
 
 const storage = new Storage({
     keyFilename: "./keys/gcp_key.json"
@@ -52,5 +55,46 @@ const copyTemplateCode = async (SOURCE_FOLDER_NAME, directoryName) => {
     }
 }
 
+const saveFilesFromGCP = async (FOLDER_NAME) => {
+    // Creates a client
+    LOCAL_FOLDER_PATH += FOLDER_NAME;
+    try {
+        const [files] = await bucket.getFiles({
+            prefix: FOLDER_NAME,
+        });
 
-module.exports = { createDirectory, copyTemplateCode }
+        // Create local folder if it doesn't exist
+
+
+        // Save each file to local folder
+        const savePromises = files.map(async (file) => {
+            if (!file.name.endsWith('/')) {
+                console.log(file.name)
+                const localFilePath = path.join(LOCAL_FOLDER_PATH, file.name.replace(FOLDER_NAME, ''));
+
+                const fileContent = await file.download();
+                console.log(fileContent[0].toString());
+
+                const directory = path.dirname(localFilePath);
+
+                if (!fs.existsSync(directory)) {
+                    fs.mkdirSync(directory, { recursive: true });
+                }
+                // Write file content to local file
+                console.log(localFilePath)
+                fs.writeFileSync(localFilePath, fileContent[0]);
+
+                console.log(`File saved to ${localFilePath}`);
+            }
+        });
+
+        // Wait for all save operations to complete
+        await Promise.all(savePromises).catch(e => console.log(e));
+
+        console.log('All files saved successfully.');
+    } catch (error) {
+        console.error(`Error reading files: ${error}`);
+    }
+}
+
+module.exports = { createDirectory, copyTemplateCode, saveFilesFromGCP }

@@ -1,6 +1,6 @@
 const express = require("express");
 const { v4: uuidv4 } = require('uuid');
-const { createDirectory, copyTemplateCode } = require("./gcp");
+const { createDirectory, copyTemplateCode, saveFilesFromGCP } = require("./gcp");
 
 const PORT = 8000 | process.env.PORT;
 
@@ -22,7 +22,7 @@ app.post("/initiateEnv", async (req, res) => {
 
     await createDirectory(DIRECTORY_NAME);
     await copyTemplateCode(SOURCE_FOLDER_NAME, DIRECTORY_NAME);
-
+    await saveFilesFromGCP(DIRECTORY_NAME);
     res.json({ "res": "Hello" })
 })
 
