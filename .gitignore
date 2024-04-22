@@ -1,2 +1,4 @@
 *node_modules
 *keys
+*local-folder
+*.DS_Store
