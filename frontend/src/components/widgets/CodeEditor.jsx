@@ -1,12 +1,6 @@
 import Editor, { useMonaco } from "@monaco-editor/react";
-import themes from "monaco-themes";
 import { useEffect, useState } from "react";
 
-const myTheme = {
-    base: 'vs-dark',
-    inherit: true,
-    rules: [{ background: 'EDF9FA' }],
-};
 
 const CodeEditor = () => {
     const monaco = useMonaco();
@@ -33,11 +27,12 @@ const CodeEditor = () => {
             theme={isThemeLoaded ? "Blackboard" : "dark"}
             value={code}
             options={{
-                inlinesuggest: true,
+                inlineSuggest: true,
                 fontSize: 18,
-                formatontype: true,
-                autoclosingbrackets: true,
-                // minimap: { scale: 0 }
+                formatOnType: true,
+                autoClosingBrackets: true,
+                minimap: { enabled: false }
+
             }}
         />
     </div>
