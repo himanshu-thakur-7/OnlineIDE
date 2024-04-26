@@ -18,7 +18,7 @@ const FileEdit = ({ ext, inputRef, updateExt, defaultValue, style }) => {
         ref={inputRef}
         onChange={updateExt}
         defaultValue={defaultValue}
-        className="tree__input"
+        className="tree__input bg-cyan-900 text-yellow-100"
       />
     </StyledFile>
   );
@@ -33,7 +33,7 @@ const FolderEdit = ({ name, inputRef, defaultValue, style }) => {
         name={
           <input
             ref={inputRef}
-            className="tree__input"
+            className="tree__input bg-cyan-900 text-yellow-100"
             defaultValue={defaultValue}
           />
         }
