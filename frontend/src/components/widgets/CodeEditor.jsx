@@ -1,11 +1,20 @@
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { selectedFileAtom } from "../../recoil/atoms/selectedFileAtom";
+
+const types = {
+    "js": "javascript",
+    "py": "python",
+    "json": "json"
+}
 
 
 const CodeEditor = () => {
     const monaco = useMonaco();
     const [isThemeLoaded, setIsThemeLoaded] = useState(false);
-
+    const selectedFile = useRecoilValue(selectedFileAtom);
+    console.log(`File in editor : ${selectedFile}`)
     useEffect(() => {
         if (monaco) {
             console.log("Monaco Editor initialized");
@@ -23,9 +32,9 @@ const CodeEditor = () => {
     return <div className=" text-6xl">
         <Editor
             height="100vh"
-            language="javascript"
+            language={types[selectedFile.split('.').splice(-1)]}
             theme={isThemeLoaded ? "Blackboard" : "dark"}
-            value={code}
+            value={selectedFile === '' ? code : selectedFile}
             options={{
                 inlineSuggest: true,
                 fontSize: 18,

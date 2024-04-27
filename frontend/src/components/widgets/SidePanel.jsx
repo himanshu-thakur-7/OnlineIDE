@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react";
 import Tree from "./Tree/Tree";
-
+import { useRecoilState } from "recoil";
+import { selectedFileAtom } from "../../recoil/atoms/selectedFileAtom";
 const structure = [
     {
         type: "folder",
@@ -42,10 +43,15 @@ const structure = [
 
 
 const SidePanel = () => {
+    const [_, setSelectedFile] = useRecoilState(selectedFileAtom);
     let [data, setData] = useState(structure);
 
     const handleClick = (node) => {
-        console.log(node);
+        if (node['node']['type'] === "file") {
+            setSelectedFile(node['node'].name);
+            console.log(selectedFileAtom);
+            console.log(node);
+        }
     };
     const handleUpdate = (state) => {
         localStorage.setItem(
