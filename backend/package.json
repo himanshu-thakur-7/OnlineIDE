@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
@@ -12,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/storage": "^7.10.0",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
+    "socket.io": "^4.7.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
