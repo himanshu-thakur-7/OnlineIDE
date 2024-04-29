@@ -3,7 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const { createServer } = require("http");
 const { createDirectory, copyTemplateCode, saveFilesFromGCP } = require("./gcp");
 const { initWs } = require("./ws");
-const cors = require("cors")
+const cors = require("cors");
+const { initHttp } = require("./http");
 const PORT = 8000 | process.env.PORT;
 
 const app = express();
@@ -11,6 +12,8 @@ app.use(cors())
 app.use(express.json());
 
 const httpServer = createServer(app);
+
+initHttp(app);
 initWs(httpServer);
 
 // app.post("/initiateEnv", async (req, res) => {

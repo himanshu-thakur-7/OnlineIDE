@@ -13,20 +13,15 @@ const initWs = (httpServer) => {
     });
     try {
         io.on("connection", async (socket) => {
-            console.log('hi')
             // Auth checks should happen here
             const replId = socket.handshake.query.roomId;
             console.log(replId);
-            console.log(socket)
+            // console.log(socket)
 
-            // if (!replId) {
-            //     socket.disconnect();
-            //     return;
-            // }
-
-            // await createDirectory(DIRECTORY_NAME);
-            // await copyTemplateCode(SOURCE_FOLDER_NAME, DIRECTORY_NAME);
-            // await saveFilesFromGCP(DIRECTORY_NAME);
+            if (!replId) {
+                socket.disconnect();
+                return;
+            }
 
         })
     }
