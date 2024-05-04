@@ -1,7 +1,7 @@
 const { Storage } = require('@google-cloud/storage');
 const fs = require('fs');
 const path = require('path');
-let LOCAL_FOLDER_PATH = './local-folder/';  // Local folder where files will be saved
+let LOCAL_FOLDER_PATH = './tmp/';  // Local folder where files will be saved
 
 const storage = new Storage({
     keyFilename: "./keys/gcp_key.json"
