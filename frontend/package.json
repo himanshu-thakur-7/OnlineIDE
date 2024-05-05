@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/styled": "^11.11.5",
+    "@material-tailwind/react": "^2.1.9",
     "@monaco-editor/react": "^4.6.0",
     "autoprefixer": "^10.4.19",
     "lodash.clonedeep": "4.5.0",
@@ -19,7 +20,10 @@
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-icons": "^5.1.0",
+    "react-router": "^6.23.0",
+    "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
+    "react-tailwindcss-select": "^1.8.5",
     "recoil": "^0.7.7",
     "styled-components": "6.1.8",
     "tailwindcss": "^3.4.3",

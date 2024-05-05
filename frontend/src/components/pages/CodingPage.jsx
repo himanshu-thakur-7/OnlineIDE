@@ -2,7 +2,16 @@ import SidePanel from "../widgets/SidePanel";
 import CodeEditor from "../widgets/CodeEditor";
 import OutputWindow from "../widgets/OutputWindow";
 import Terminal from "../widgets/Terminal";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
 const CodingPage = () => {
+    const { state } = useLocation();
+    console.log(state)
+
+    useEffect(() => {
+
+    }, []);
+
 
     return <div className='grid grid-cols-4 bg-cyan-950 h-screen text-yellow-100 divide-x-2 px-4'>
         <div className='col-span-1  p-4'>
