@@ -28,9 +28,9 @@ const initWs = (httpServer) => {
                 rootContent: await fetchDir(LOCALPATH, '')
             });
 
+            helper(socket, replId);
         })
 
-        helper(socket, replId);
     }
     catch (e) {
         console.log(e)

@@ -1,7 +1,6 @@
 const express = require("express");
 const { v4: uuidv4 } = require('uuid');
 const { createServer } = require("http");
-const { createDirectory, copyTemplateCode, saveFilesFromGCP } = require("./gcp");
 const { initWs } = require("./ws");
 const cors = require("cors");
 const { initHttp } = require("./http");

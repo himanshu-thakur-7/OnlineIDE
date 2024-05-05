@@ -14,6 +14,7 @@
     "@material-tailwind/react": "^2.1.9",
     "@monaco-editor/react": "^4.6.0",
     "autoprefixer": "^10.4.19",
+    "axios": "^1.6.8",
     "lodash.clonedeep": "4.5.0",
     "monaco-themes": "^0.4.4",
     "postcss": "^8.4.38",
@@ -25,6 +26,7 @@
     "react-scripts": "5.0.1",
     "react-tailwindcss-select": "^1.8.5",
     "recoil": "^0.7.7",
+    "socket.io-client": "^4.7.5",
     "styled-components": "6.1.8",
     "tailwindcss": "^3.4.3",
     "uuid": "9.0.1"
