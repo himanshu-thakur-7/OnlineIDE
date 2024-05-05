@@ -12,14 +12,20 @@ const CodingPage = () => {
     const { state } = useLocation();
     console.log(state)
     const [loaded, setLoaded] = useState(false);
-    useEffect(async () => {
-        const resp = await axios.post(URL, { 'env': state });
-        console.log(resp);
-        setLoaded(true);
+    useEffect(() => {
+        const fetchData = async () => {
+            const resp = await axios.post(URL, { 'env': state });
+            console.log(resp);
+            setTimeout(() => {
+                setLoaded(true);
+            }, 2000)
+
+        }
+        fetchData();
     }, []);
 
 
-    return <div>
+    return <div className="bg-cyan-950 h-screen text-yellow-100 items-center justify-center">
         {loaded === true ? <div className="grid grid-cols-4 bg-cyan-950 h-screen text-yellow-100 divide-x-2 px-4">
             <div className='col-span-1  p-4'>
                 <SidePanel />
@@ -28,11 +34,11 @@ const CodingPage = () => {
                 <CodeEditor />
             </div>
             <div className='col-span-1 p-4 divide-y-2'>
-                <div class="grid grid-rows-2 h-screen">
-                    <div class="row-span-1  p-4">
+                <div className="grid grid-rows-2 h-screen">
+                    <div className="row-span-1  p-4">
                         <OutputWindow />
                     </div>
-                    <div class="row-span-1  p-4">
+                    <div className="row-span-1  p-4">
                         <Terminal />
                     </div>
                 </div>
