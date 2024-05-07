@@ -9,8 +9,6 @@ const options = [
 
 ];
 
-
-
 const HomePage = () => {
     const navigate = useNavigate();
     const [showSnackBar, setShowSnackBar] = useState(false);
