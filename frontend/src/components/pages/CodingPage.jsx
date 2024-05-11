@@ -6,6 +6,10 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../widgets/Loader"
+import { io } from 'socket.io-client';
+
+const WS_URL = 'http://localhost:8000';
+
 
 const URL = "http://localhost:8000/project"
 const CodingPage = () => {
@@ -16,12 +20,15 @@ const CodingPage = () => {
         const fetchData = async () => {
             const resp = await axios.post(URL, { 'env': state });
             console.log(resp);
-            setTimeout(() => {
-                setLoaded(true);
-            }, 2000)
+            const socket = io(WS_URL + `?roomId=${resp["data"]["roomId"]}`);
+            console.log(socket);
+            socket.on('loaded', (data) => {
+                console.log(data);
+            })
+            setLoaded(true);
 
         }
-        fetchData();
+        fetchData()
     }, []);
 
 

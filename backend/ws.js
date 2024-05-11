@@ -23,7 +23,7 @@ const initWs = (httpServer) => {
                 socket.disconnect();
                 return;
             }
-            const LOCALPATH = "./tmp/" + DIRECTORY_NAME;
+            const LOCALPATH = "tmp/" + DIRECTORY_NAME;
             socket.emit("loaded", {
                 rootContent: await fetchDir(LOCALPATH, '')
             });

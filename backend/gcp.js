@@ -1,7 +1,7 @@
 const { Storage } = require('@google-cloud/storage');
 const fs = require('fs');
 const path = require('path');
-let LOCAL_FOLDER_PATH = './tmp/';  // Local folder where files will be saved
+let LOCAL_FOLDER_PATH = 'tmp/';  // Local folder where files will be saved
 
 const storage = new Storage({
     keyFilename: "./keys/gcp_key.json"
@@ -57,12 +57,13 @@ const copyTemplateCode = async (SOURCE_FOLDER_NAME, directoryName) => {
 
 const saveFilesFromGCP = async (FOLDER_NAME) => {
     // Creates a client
+    let LOCAL_FOLDER_PATH = 'tmp/';
     LOCAL_FOLDER_PATH += FOLDER_NAME;
     try {
         const [files] = await bucket.getFiles({
             prefix: FOLDER_NAME,
         });
-
+        console.log(`Total number of files: ${files[0].name} ${files.length}`)
         // Create local folder if it doesn't exist
 
 
