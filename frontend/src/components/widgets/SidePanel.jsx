@@ -47,6 +47,8 @@ const SidePanel = ({ socket }) => {
     let [_data, setData] = useRecoilState(projectFilesAtom);
     const data = useRecoilValue(projectFilesAtom);
     const [_, setSelectedFile] = useRecoilState(selectedFileAtom);
+    const selectedFile = useRecoilValue(selectedFileAtom);
+
 
     useLayoutEffect(() => {
         socket.on('loaded', (files) => {
@@ -62,21 +64,35 @@ const SidePanel = ({ socket }) => {
 
     const handleClick = (node) => {
         if (node['node']['type'] === "file") {
-            setSelectedFile(node['node'].name);
+            console.log(JSON.stringify(node['node']['path']))
+            socket?.emit("fetchContent", { path: node['node']['path'] }, (data) => {
+                console.log(data)
+                // node['node']['content'] = data;
+                let updatedFiles = [..._data].map((item) => {
+                    if (item.path === node['node']['path']) return { ...item, content: data };
+                    else return item;
+                });
+
+                setData(updatedFiles);
+                setSelectedFile({ 'content': node['node']['content'], 'name': node['node']['name'] });
+                console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
+                // setSelectedFile(file);
+            });
             console.log(selectedFileAtom);
             console.log(node);
+
         }
     };
     const handleUpdate = (state) => {
-        localStorage.setItem(
-            "tree",
-            JSON.stringify(state, function (key, value) {
-                if (key === "parentNode" || key === "id") {
-                    return null;
-                }
-                return value;
-            })
-        );
+        // localStorage.setItem(
+        //     "tree",
+        //     JSON.stringify(state, function (key, value) {
+        //         if (key === "parentNode" || key === "id") {
+        //             return null;
+        //         }
+        //         return value;
+        //     })
+        // );
     };
 
     // useLayoutEffect(() => {

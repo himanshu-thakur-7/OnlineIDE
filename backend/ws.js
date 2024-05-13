@@ -43,11 +43,12 @@ const helper = (socket, replId) => {
     })
 
     socket.on('fetchDir', async (dirname, cb) => {
-        const contents = await fetchDir(`./tmp/${replId}/${dirname}`, dirname);
+        const contents = await fetchDir(`tmp/${replId}/${dirname}`, dirname);
         cb(contents);
     })
     socket.on('fetchContent', async (filePath, cb) => {
-        const contents = await fetchFileContent(`./tmp/${replId}/${filePath}`);
+        console.log(filePath['path']);
+        const contents = await fetchFileContent(`tmp/${replId}${filePath['path']}`);
         cb(contents);
     })
 }

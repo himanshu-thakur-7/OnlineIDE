@@ -1,11 +1,12 @@
 const fs = require("fs");
+const { v4 } = require("uuid");
 const fetchDir = (dir, baseDir) => {
     return new Promise((resolve, reject) => {
         fs.readdir(dir, { withFileTypes: true }, (err, files) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(files.map(file => ({ type: file.isDirectory() ? "dir" : "file", name: file.name, path: `${baseDir}/${file.name}` })));
+                resolve(files.map(file => ({ type: file.isDirectory() ? "dir" : "file", name: file.name, path: `${baseDir}/${file.name}`, content: ''})));
             }
         });
     });

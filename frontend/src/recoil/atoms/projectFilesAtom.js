@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const projectFilesAtom = atom({
+export let projectFilesAtom = atom({
     key: "projectFilesAtom",
     default: [],
 });
