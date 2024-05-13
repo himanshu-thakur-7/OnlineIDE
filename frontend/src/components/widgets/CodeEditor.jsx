@@ -29,6 +29,7 @@ const CodeEditor = () => {
         }
     }, [monaco])
     const code = "var message = 'monaco editor!' \nconsole.log(message);";
+    console.log(types[selectedFile.split('.').splice(-1)])
     return <div className="">
         <div className="text-m border-1 w-1/4">
             {selectedFile}

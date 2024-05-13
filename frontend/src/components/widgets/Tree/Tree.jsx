@@ -48,18 +48,18 @@ const Tree = ({ children, data, onNodeClick, onUpdate }) => {
 
 const TreeRecusive = ({ data, parentNode }) => {
   return data.map((item) => {
-    item.parentNode = parentNode;
-    if (!parentNode) {
-      item.parentNode = data;
-    }
-    if (!item.id) item.id = v4();
+    // item.parentNode = parentNode;
+    // if (!parentNode) {
+    //   item.parentNode = data;
+    // }
+    // if (!item.id) item.id = v4();
 
     if (item.type === "file") {
-      return <File key={item.id} id={item.id} name={item.name} node={item} />;
+      return <File key={v4()} id={v4()} name={item.name} node={item} />;
     }
     if (item.type === "folder") {
       return (
-        <Folder key={item.id} id={item.id} name={item.name} node={item}>
+        <Folder key={v4()} id={v4()} name={item.name} node={item}>
           <TreeRecusive parentNode={item} data={item.files} />
         </Folder>
       );

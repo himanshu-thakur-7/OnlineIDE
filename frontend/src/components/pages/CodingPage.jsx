@@ -8,11 +8,17 @@ import axios from "axios";
 import Loader from "../widgets/Loader"
 import { io } from 'socket.io-client';
 
+import { useRecoilState } from "recoil";
+
+import { projectFilesAtom } from "../../recoil/atoms/projectFilesAtom";
+
 const WS_URL = 'http://localhost:8000';
 
 
 const URL = "http://localhost:8000/project"
 const CodingPage = () => {
+    const [_socket, setSocket] = useState(null);
+    const [projFiles, setProjectFiles] = useRecoilState(projectFilesAtom);
     const { state } = useLocation();
     console.log(state)
     const [loaded, setLoaded] = useState(false);
@@ -22,20 +28,17 @@ const CodingPage = () => {
             console.log(resp);
             const socket = io(WS_URL + `?roomId=${resp["data"]["roomId"]}`);
             console.log(socket);
-            socket.on('loaded', (data) => {
-                console.log(data);
-            })
+            setSocket(socket);
             setLoaded(true);
-
         }
-        fetchData()
+        fetchData();
     }, []);
 
 
     return <div className="bg-cyan-950 h-screen text-yellow-100 items-center justify-center">
         {loaded === true ? <div className="grid grid-cols-4 bg-cyan-950 h-screen text-yellow-100 divide-x-2 px-4">
             <div className='col-span-1  p-4'>
-                <SidePanel />
+                <SidePanel socket={_socket} />
             </div>
             <div className='col-span-2  p-4'>
                 <CodeEditor />
