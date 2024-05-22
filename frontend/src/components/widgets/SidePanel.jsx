@@ -65,19 +65,23 @@ const SidePanel = ({ socket }) => {
     const handleClick = (node) => {
         if (node['node']['type'] === "file") {
             console.log(JSON.stringify(node['node']['path']))
-            socket?.emit("fetchContent", { path: node['node']['path'] }, (data) => {
-                console.log(data)
-                // node['node']['content'] = data;
-                let updatedFiles = [..._data].map((item) => {
-                    if (item.path === node['node']['path']) return { ...item, content: data };
-                    else return item;
-                });
+            if (node['node']['content'] === '') {
+                socket?.emit("fetchContent", { path: node['node']['path'] }, (data) => {
+                    console.log(data)
+                    // node['node']['content'] = data;
+                    let updatedFiles = [..._data].map((item) => {
+                        if (item.path === node['node']['path']) return { ...item, content: data };
+                        else return item;
+                    });
 
-                setData(updatedFiles);
-                setSelectedFile({ 'content': node['node']['content'], 'name': node['node']['name'] });
-                console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
-                // setSelectedFile(file);
-            });
+                    setData(updatedFiles);
+                    // setSelectedFile(file);
+                });
+            }
+            setSelectedFile({ 'content': node['node']['content'], 'name': node['node']['name'] });
+            console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
+
+
             console.log(selectedFileAtom);
             console.log(node);
 
