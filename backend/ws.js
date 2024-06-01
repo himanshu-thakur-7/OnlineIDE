@@ -2,7 +2,6 @@ const { Server, Socket } = require("socket.io");
 const path = require("path")
 const { saveFilesFromGCP } = require("./gcp");
 const { fetchDir, fetchFileContent } = require("./fs");
-const { TerminalManager } = require("./pty");
 const pty = require('node-pty');
 process.env.HOME = process.cwd();
 const initWs = (httpServer) => {
@@ -56,21 +55,6 @@ const helper = (socket, replId) => {
         cb(contents);
     })
 
-    // socket.on("requestTerminal", async () => {
-    //     console.log("Terminal Requested")
-    //     const terminalManager = new TerminalManager();
-    //     terminalManager.createPty(socket.id, replId, (data, id) => {
-    //         socket.emit('terminal', {
-    //             data: Buffer.from(data, "utf-8")
-    //         });
-    //     });
-    // });
-
-    // socket.on("terminalData", async ({ data }) => {
-    //     const terminalManager = new TerminalManager();
-
-    //     terminalManager.write(socket.id, data);
-    // });
 
     const shell = process.platform === 'win32' ? 'powershell.exe' : 'bash';
 
@@ -99,14 +83,7 @@ const helper = (socket, replId) => {
         console.log('Client disconnected');
         ptyProcess.kill();
     });
-    // pty = new PTYService(this.socket);
 
-    // // Attach event listener for socket.io
-    // socket.on("input", input => {
-    //     // Runs this listener when socket receives "input" events from socket.io client.
-    //     // input event is emitted on client side when user types in terminal UI
-    //     pty.write(input);
-    // });
 }
 
 module.exports = { initWs }
