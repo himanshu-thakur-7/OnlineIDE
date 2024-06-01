@@ -2,6 +2,8 @@ import Editor, { useMonaco } from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { selectedFileAtom } from "../../recoil/atoms/selectedFileAtom";
+import { projectFilesAtom } from "../../recoil/atoms/projectFilesAtom";
+
 import _ from "lodash";
 
 const types = {
@@ -15,7 +17,8 @@ const CodeEditor = () => {
     const monaco = useMonaco();
     const [isThemeLoaded, setIsThemeLoaded] = useState(false);
     const selectedFile = useRecoilValue(selectedFileAtom);
-    console.log(`File in editor : ${JSON.stringify(selectedFile)}`)
+    const files = useRecoilValue(projectFilesAtom);
+    console.log(`File in editor : ${JSON.stringify(selectedFile)}, all files: ${JSON.stringify(files)}`)
     useEffect(() => {
         if (monaco) {
             console.log("Monaco Editor initialized");
@@ -30,7 +33,7 @@ const CodeEditor = () => {
         }
     }, [monaco])
     const code = "var message = 'monaco editor!' \nconsole.log(message);";
-    const updateFileContent = (data)=>{
+    const updateFileContent = (data) => {
         console.log(data)
     }
     return <div className="">
@@ -40,9 +43,9 @@ const CodeEditor = () => {
         <Editor
             onChange={updateFileContent}
             height="100vh"
-            language={_.isEmpty(selectedFile) ? 'text' : types[selectedFile['name'].split('.').splice(-1)]}
+            language={_.isEmpty(selectedFile) ? 'text' : types[selectedFile['path'].split('.').splice(-1)]}
             theme={isThemeLoaded ? "Blackboard" : "dark"}
-            value={_.isEmpty(selectedFile) ? code : selectedFile['content']}
+            value={_.isEmpty(selectedFile) ? code : files.find(obj => obj['path'] === selectedFile['path'])['content']}
             options={{
                 inlineSuggest: true,
                 fontSize: 18,

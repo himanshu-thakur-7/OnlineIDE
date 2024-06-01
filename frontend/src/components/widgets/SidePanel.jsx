@@ -78,7 +78,7 @@ const SidePanel = ({ socket }) => {
                     // setSelectedFile(file);
                 });
             }
-            setSelectedFile({ 'content': node['node']['content'], 'name': node['node']['name'] });
+            setSelectedFile({ 'path': node['node']['path'] });
             console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
 
 
