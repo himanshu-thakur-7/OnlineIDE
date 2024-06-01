@@ -63,6 +63,7 @@ const SidePanel = ({ socket }) => {
     console.log(`Side Panel Data: ${JSON.stringify(data)}`)
 
     const handleClick = (node) => {
+        console.log(node)
         if (node['node']['type'] === "file" && node['node']['path'] !== selectedFile['path']) {
             console.log(JSON.stringify(node['node']['path']))
             // if (node['node']['content'] === false || node['node']['content'] === "") {
@@ -81,7 +82,7 @@ const SidePanel = ({ socket }) => {
             //         // setSelectedFile(file);
             //     });
             // }
-            setSelectedFile({ 'path': node['node']['path'] });
+            setSelectedFile({ 'path': node['node']['path'], 'name': node['node']['name'] });
             console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
 
 
