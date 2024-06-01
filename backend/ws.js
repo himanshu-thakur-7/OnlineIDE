@@ -80,7 +80,7 @@ const helper = (socket, replId) => {
     const ptyProcess = pty.spawn(shell, [], {
         name: 'xterm-color',
         cols: 80,
-        rows: 25,
+        rows: 40,
         cwd: process.env.HOME,
         env: process.env,
     });
