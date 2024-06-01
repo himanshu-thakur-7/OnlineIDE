@@ -63,21 +63,24 @@ const SidePanel = ({ socket }) => {
     console.log(`Side Panel Data: ${JSON.stringify(data)}`)
 
     const handleClick = (node) => {
-        if (node['node']['type'] === "file") {
+        if (node['node']['type'] === "file" && node['node']['path'] !== selectedFile['path']) {
             console.log(JSON.stringify(node['node']['path']))
-            if (node['node']['content'] === '') {
-                socket?.emit("fetchContent", { path: node['node']['path'] }, (data) => {
-                    console.log(data)
-                    // node['node']['content'] = data;
-                    let updatedFiles = [..._data].map((item) => {
-                        if (item.path === node['node']['path']) return { ...item, content: data };
-                        else return item;
-                    });
+            // if (node['node']['content'] === false || node['node']['content'] === "") {
+            //     socket?.emit("fetchContent", { path: node['node']['path'] }, (data) => {
+            //         // console.log(data)
+            //         // // node['node']['content'] = data;
+            //         let updatedFiles = [..._data].map((item) => {
+            //             if (item.path === node['node']['path']) return { ...item, content: true };
+            //             else return item;
+            //         });
 
-                    setData(updatedFiles);
-                    // setSelectedFile(file);
-                });
-            }
+            //         // setData(updatedFiles);
+            //         const key = node['node']['path'];
+
+            //         setFileContents(content => ({ ...content, [key]: data }))
+            //         // setSelectedFile(file);
+            //     });
+            // }
             setSelectedFile({ 'path': node['node']['path'] });
             console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
 

@@ -42,7 +42,7 @@ const CodingPage = () => {
                 <SidePanel socket={_socket} />
             </div>
             <div className='col-span-3  p-4'>
-                <CodeEditor />
+                <CodeEditor socket={_socket} />
             </div>
             <div className='col-span-3 p-4 '>
                 <OutputPane socket={_socket} />

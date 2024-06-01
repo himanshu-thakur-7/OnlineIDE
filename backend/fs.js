@@ -6,7 +6,7 @@ const fetchDir = (dir, baseDir) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(files.map(file => ({ type: file.isDirectory() ? "dir" : "file", name: file.name, path: `${baseDir}/${file.name}`, content: ''})));
+                resolve(files.map(file => ({ type: file.isDirectory() ? "dir" : "file", name: file.name, path: `${baseDir}/${file.name}` })));
             }
         });
     });
