@@ -14,6 +14,7 @@ const OPTIONS_TERM = {
     screenKeys: true,
     cursorBlink: true,
     cols: 200,
+    rows: 25,
     theme: {
         background: "black"
     }
@@ -21,7 +22,6 @@ const OPTIONS_TERM = {
 const TerminalComponent = ({ socket }) => {
     const terminalRef = useRef(null);
     const fitAddon = new FitAddon();
-    const hasInitializedRef = useRef(false);
     // const terminalHandler = ({ data }) => {
     //     console.log("terminal handler line 38")
     //     console.log(data);
@@ -71,8 +71,6 @@ const TerminalComponent = ({ socket }) => {
 
 
         const terminal = new Terminal(OPTIONS_TERM);
-
-        terminal.onKey((k) => { console.log(k) })
         console.log("terminal loaded line 73")
         terminal.loadAddon(fitAddon);
         terminal.open(terminalRef.current);
@@ -100,7 +98,7 @@ const TerminalComponent = ({ socket }) => {
     }, [])
 
 
-    return <div className=" w-3/5 h-5/6" style={{ textAlign: "left", backgroundColor: "#000" }} ref={terminalRef}>
+    return <div className=" w-screen*0.9 h-5/6" style={{ textAlign: "left", backgroundColor: "#000", paddingBottom: 220 }} ref={terminalRef}>
 
     </div>
 }

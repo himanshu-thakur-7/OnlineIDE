@@ -11,6 +11,7 @@ import { io } from 'socket.io-client';
 import { useRecoilState } from "recoil";
 
 import { projectFilesAtom } from "../../recoil/atoms/projectFilesAtom";
+import OutputPane from "../widgets/OutputPane";
 
 const WS_URL = 'http://localhost:8000';
 
@@ -43,15 +44,12 @@ const CodingPage = () => {
             <div className='col-span-3  p-4'>
                 <CodeEditor />
             </div>
-            <div className='col-span-3 p-4 divide-y-2'>
-                <div className="grid grid-rows-3 h-screen">
-                    <div className="row-span-1  p-4">
-                        <OutputWindow />
-                    </div>
-                    <div className="row-span-2  px-4">
-                        <TerminalComponent socket={_socket} />
-                    </div>
-                </div>
+            <div className='col-span-3 p-4 '>
+                <OutputPane socket={_socket} />
+                {/* <div className="row-span-2  px-4">
+                    <TerminalComponent socket={_socket} />
+                </div> */}
+
 
             </div>
         </div> : <Loader />}
