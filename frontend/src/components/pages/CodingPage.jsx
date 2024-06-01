@@ -1,7 +1,7 @@
 import SidePanel from "../widgets/SidePanel";
 import CodeEditor from "../widgets/CodeEditor";
 import OutputWindow from "../widgets/OutputWindow";
-import Terminal from "../widgets/Terminal";
+import TerminalComponent from "../widgets/Terminal";
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -36,20 +36,20 @@ const CodingPage = () => {
 
 
     return <div className="bg-cyan-950 h-screen text-yellow-100 items-center justify-center">
-        {loaded === true ? <div className="grid grid-cols-4 bg-cyan-950 h-screen text-yellow-100 divide-x-2 px-4">
+        {loaded === true ? <div className="grid grid-cols-7 bg-cyan-950 h-screen w-screen text-yellow-100 divide-x-2 px-4">
             <div className='col-span-1  p-4'>
                 <SidePanel socket={_socket} />
             </div>
-            <div className='col-span-2  p-4'>
+            <div className='col-span-3  p-4'>
                 <CodeEditor />
             </div>
-            <div className='col-span-1 p-4 divide-y-2'>
-                <div className="grid grid-rows-2 h-screen">
+            <div className='col-span-3 p-4 divide-y-2'>
+                <div className="grid grid-rows-3 h-screen">
                     <div className="row-span-1  p-4">
                         <OutputWindow />
                     </div>
-                    <div className="row-span-1  p-4">
-                        <Terminal />
+                    <div className="row-span-2  px-4">
+                        <TerminalComponent socket={_socket} />
                     </div>
                 </div>
 

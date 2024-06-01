@@ -1,0 +1,16 @@
+/* Apply box-sizing globally */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Ensure html and body take full height and have no margins */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* Prevent body scroll */
+}

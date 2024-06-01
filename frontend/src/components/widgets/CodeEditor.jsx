@@ -30,11 +30,15 @@ const CodeEditor = () => {
         }
     }, [monaco])
     const code = "var message = 'monaco editor!' \nconsole.log(message);";
+    const updateFileContent = (data)=>{
+        console.log(data)
+    }
     return <div className="">
         <div className="text-m border-1 w-1/4">
             {selectedFile['name']}
         </div>
         <Editor
+            onChange={updateFileContent}
             height="100vh"
             language={_.isEmpty(selectedFile) ? 'text' : types[selectedFile['name'].split('.').splice(-1)]}
             theme={isThemeLoaded ? "Blackboard" : "dark"}
