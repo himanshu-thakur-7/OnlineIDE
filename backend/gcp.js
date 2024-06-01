@@ -98,4 +98,18 @@ const saveFilesFromGCP = async (FOLDER_NAME) => {
     }
 }
 
-module.exports = { createDirectory, copyTemplateCode, saveFilesFromGCP }
+async function updateFileS3(fileName, newContent) {
+    try {
+        // Create a reference to the file in the bucket
+        const file = storage.bucket(BUCKET_NAME).file(fileName);
+
+        // Upload the new content to the file
+        await file.save(newContent);
+
+        console.log(`File ${fileName} updated successfully in bucket ${BUCKET_NAME}.`);
+    } catch (error) {
+        console.error('Error updating the file:', error);
+    }
+}
+
+module.exports = { createDirectory, copyTemplateCode, saveFilesFromGCP, updateFileS3 }

@@ -1,7 +1,7 @@
 const { Server, Socket } = require("socket.io");
 const path = require("path")
-const { saveFilesFromGCP } = require("./gcp");
-const { fetchDir, fetchFileContent } = require("./fs");
+const { saveFilesFromGCP, updateFileS3 } = require("./gcp");
+const { fetchDir, fetchFileContent, saveFile } = require("./fs");
 const pty = require('node-pty');
 process.env.HOME = process.cwd();
 const initWs = (httpServer) => {
@@ -77,7 +77,12 @@ const helper = (socket, replId) => {
         ptyProcess.write(input);
     });
 
-
+    socket.on("updateContent", async ({ path, content }) => {
+        // const fullPath = path.join(__dirname, `../tmp/${replId}/${filePath}`);
+        await saveFile(`tmp/${replId}${path}`, content);
+        await updateFileS3(`/${replId}${path}`, content);
+        // await saveToS3(`code/${replId}`, filePath, content);
+    });
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');

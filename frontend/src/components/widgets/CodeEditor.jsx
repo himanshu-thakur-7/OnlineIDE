@@ -41,7 +41,8 @@ const CodeEditor = ({ socket }) => {
         debounce((data) => {
             console.log(data);
             setFileContents(content => ({ ...content, [selectedFile['path']]: data }));
-        }, 700),
+            socket?.emit("updateContent", { path: selectedFile['path'], content: data });
+        }, 800),
         [selectedFile['path'], setFileContents]
     );
 

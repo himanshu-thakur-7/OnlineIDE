@@ -24,4 +24,16 @@ const fetchFileContent = (file) => {
         });
     })
 }
-module.exports = { fetchDir, fetchFileContent }
+
+const saveFile = async (file, content) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(file, content, "utf8", (err) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve();
+        });
+    });
+}
+
+module.exports = { fetchDir, fetchFileContent, saveFile }
