@@ -2,7 +2,7 @@ import SidePanel from "../widgets/SidePanel";
 import CodeEditor from "../widgets/CodeEditor";
 import OutputWindow from "../widgets/OutputWindow";
 import TerminalComponent from "../widgets/Terminal";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../widgets/Loader"
@@ -23,11 +23,13 @@ const CodingPage = () => {
     const { state } = useLocation();
     console.log(state)
     const [loaded, setLoaded] = useState(false);
+    const { roomId } = useParams();
     useEffect(() => {
         const fetchData = async () => {
-            const resp = await axios.post(URL, { 'env': state });
+            const resp = await axios.post(URL, { 'env': state, 'replId': roomId });
             console.log(resp);
-            const socket = io(WS_URL + `?roomId=${resp["data"]["roomId"]}`);
+            console.log(roomId)
+            const socket = io(WS_URL + `?roomId=${roomId}`);
             console.log(socket);
             setSocket(socket);
             setLoaded(true);

@@ -78,9 +78,10 @@ const helper = (socket, replId) => {
     });
 
     socket.on("updateContent", async ({ path, content }) => {
+        console.log(content);
         // const fullPath = path.join(__dirname, `../tmp/${replId}/${filePath}`);
         await saveFile(`tmp/${replId}${path}`, content);
-        await updateFileS3(`/${replId}${path}`, content);
+        await updateFileS3(`${replId}${path}`, content);
         // await saveToS3(`code/${replId}`, filePath, content);
     });
 

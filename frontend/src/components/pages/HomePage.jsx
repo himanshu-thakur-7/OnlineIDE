@@ -2,28 +2,37 @@ import Select from "react-tailwindcss-select";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import SnackBar from "../widgets/Snackbar";
-import Loader from "../widgets/Loader";
+import axios from "axios";
+import { generateSlug } from "random-word-slugs";
+
+// import Loader from "../widgets/Loader";
 const options = [
     { value: "node", label: "🚀 Nodejs" },
     { value: "python", label: "🐍 Python" },
 
 ];
 
+const URL = "http://localhost:8000/project"
+
 const HomePage = () => {
     const navigate = useNavigate();
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [env, setEnv] = useState(null);
 
-    const createEnv = () => {
+    const createEnv = async () => {
+        console.log('hi');
         if (!env) {
             setShowSnackBar(true);
         }
         else {
-            navigate('/codingPage', {
+
+            const slug = generateSlug(3);
+            navigate(`/codingPage/${slug}`, {
                 state: env.value
             })
         }
     }
+
     useEffect(() => {
         if (showSnackBar) {
             setTimeout(() => {

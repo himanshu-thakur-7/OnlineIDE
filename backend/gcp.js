@@ -10,6 +10,16 @@ const storage = new Storage({
 const BUCKET_NAME = "ide7781";
 const bucket = storage.bucket(BUCKET_NAME);
 
+async function directoryExists(directoryPath) {
+    // Adding a trailing slash if it's not present
+    if (!directoryPath.endsWith('/')) {
+        directoryPath += '/';
+    }
+
+    const [files] = await bucket.getFiles({ prefix: directoryPath, maxResults: 1 });
+
+    return files.length > 0;
+}
 
 const createDirectory = async (directoryName) => {
     try {
@@ -112,4 +122,4 @@ async function updateFileS3(fileName, newContent) {
     }
 }
 
-module.exports = { createDirectory, copyTemplateCode, saveFilesFromGCP, updateFileS3 }
+module.exports = { createDirectory, copyTemplateCode, saveFilesFromGCP, updateFileS3, directoryExists }

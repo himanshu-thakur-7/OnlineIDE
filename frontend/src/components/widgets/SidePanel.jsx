@@ -52,10 +52,11 @@ const SidePanel = ({ socket }) => {
 
     useLayoutEffect(() => {
         socket.on('loaded', (files) => {
+            const fetchedFiles = files["rootContent"].filter((d) => d !== null)
             console.log("Files: ", files['rootContent']);
             console.log('Loaded event')
             // console.log(files['rootContent']);
-            setData(files['rootContent']);
+            setData(fetchedFiles);
             console.log(data);
         })
     }, [])
