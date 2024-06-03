@@ -7,7 +7,7 @@ import { generateSlug } from "random-word-slugs";
 
 // import Loader from "../widgets/Loader";
 const options = [
-    { value: "node", label: "🚀 Nodejs" },
+    { value: "nodejs", label: "🚀 Nodejs" },
     { value: "python", label: "🐍 Python" },
 
 ];

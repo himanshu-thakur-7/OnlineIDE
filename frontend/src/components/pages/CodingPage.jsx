@@ -29,7 +29,7 @@ const CodingPage = () => {
             const resp = await axios.post(URL, { 'env': state, 'replId': roomId });
             console.log(resp);
             console.log(roomId)
-            const socket = io(WS_URL + `?roomId=${roomId}`);
+            const socket = io(WS_URL + `?roomId=${roomId}&env=${state}`);
             console.log(socket);
             setSocket(socket);
             setLoaded(true);

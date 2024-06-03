@@ -4,6 +4,7 @@ const { createServer } = require("http");
 const { initWs } = require("./ws");
 const cors = require("cors");
 const { initHttp } = require("./http");
+const { initOrchestrator } = require("./wsserver1");
 const PORT = 8000 | process.env.PORT;
 
 const app = express();
@@ -13,7 +14,7 @@ app.use(express.json());
 const httpServer = createServer(app);
 
 initHttp(app);
-initWs(httpServer);
+initOrchestrator(httpServer);
 
 // app.post("/initiateEnv", async (req, res) => {
 
