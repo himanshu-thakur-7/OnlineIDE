@@ -103,7 +103,7 @@ async function startContainer(containerName, env) {
                 SecurityOpt: ['seccomp=unconfined'],
                 PortBindings: {
                     '6000/tcp': [{ HostPort: `${ports[0]}` }],
-                    '3000/tcp': [{ HostPort: '3000' }]
+                    '3000/tcp': [{ HostPort: `${ports[1]}` }]
                 }
             },
             ExposedPorts: {
@@ -144,7 +144,7 @@ async function startContainer(containerName, env) {
         terminals[containerId] = terminal;
     }
     // console.log("PORTS:::", ports)
-    return { containerId: containerId, webSocketPort: ports.length > 0 ? ports[0] : -1 };
+    return { containerId: containerId, webSocketPort: ports.length > 0 ? ports[0] : -1 ,devPort: ports.length > 0 ? ports[1]: -1};
 }
 
 async function stopContainer(containerId) {

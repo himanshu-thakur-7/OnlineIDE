@@ -1,8 +1,15 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './react-tabs.css';
 import TerminalComponent from "../widgets/Terminal";
-const OutputPane = ({ socket }) => (
-    <Tabs onSelect={() => console.log('selected')}>
+import { devUrlAtom } from "../../recoil/atoms/devUrlAtom";
+
+import { useRecoilValue } from "recoil";
+
+
+const OutputPane = ({ socket }) => {
+    const devUrl = useRecoilValue(devUrlAtom);
+
+    return <Tabs onSelect={() => console.log('selected')}>
         <TabList>
             <Tab>Terminal</Tab>
         </TabList>
@@ -13,6 +20,6 @@ const OutputPane = ({ socket }) => (
             </div>
         </TabPanel>
     </Tabs>
-);
+};
 
 export default OutputPane;

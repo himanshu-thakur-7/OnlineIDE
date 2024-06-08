@@ -98,7 +98,7 @@ const TerminalComponent = ({ socket }) => {
     }, [])
 
 
-    return <div className=" w-screen*0.9 h-5/6" style={{ textAlign: "left", backgroundColor: "#000", paddingBottom: 220 }} ref={terminalRef}>
+    return <div className=" w-screen*0.9 h-1/2" style={{ textAlign: "left", backgroundColor: "#000", paddingBottom: 220 }} ref={terminalRef}>
 
     </div>
 }

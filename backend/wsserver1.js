@@ -15,19 +15,21 @@ const initOrchestrator = (httpServer) => {
             const replId = socket.handshake.query.roomId;
             const env = socket.handshake.query.env;
             console.log(replId, env);
-            let { containerId, webSocketPort } = await startContainer(replId, env);
+            let { containerId, webSocketPort,devPort } = await startContainer(replId, env);
             console.log(webSocketPort)
             if (webSocketPort === -1) {
-                webSocketPort = connections[containerId][0]['PORT'];
+                webSocketPort = connections[containerId][0]['WS_PORT'];
+            }
+            if (devPort === -1) {
+                devPort = connections[containerId][0]['DEV_PORT'];
             }
             console.log(`Container Id: ${containerId}`);
             connections[containerId] = connections[containerId] || [];
-            connections[containerId].push({ 'socketId': socket.id, 'PORT': webSocketPort });
+            connections[containerId].push({ 'socketId': socket.id, 'WS_PORT': webSocketPort,'DEV_PORT':devPort });
 
-            const CONTAINER_URL = `http://localhost:${webSocketPort}`
             console.log(webSocketPort);
             console.log(connections);
-            socket.emit('containerCreated', webSocketPort);
+            socket.emit('containerCreated', {'webSocketPort': webSocketPort,'devPort':devPort});
 
             // relayEvents(socket,webServer2,terminal);
             // terminal.on('data', (data) => {
