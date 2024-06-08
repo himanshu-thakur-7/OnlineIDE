@@ -8,7 +8,7 @@ const terminals = {};
 
 async function findAvailablePorts(count) {
     const ports = [];
-    portfinder.basePort = 3000; // starting point for the port search
+    portfinder.basePort = 7000; // starting point for the port search
 
     for (let i = 0; i < count; i++) {
         const port = await portfinder.getPortPromise();
@@ -25,6 +25,7 @@ async function getContainerByName(containerName) {
 }
 
 async function isPackageInstalled(container, packageName) {
+    if (packageName === 'react') packageName = "nodejs";
     const exec = await container.exec({
         AttachStdout: true,
         AttachStderr: true,
@@ -43,6 +44,7 @@ async function isPackageInstalled(container, packageName) {
 }
 
 async function installPackage(container, packageName) {
+    if (packageName === 'react') packageName = "nodejs";
     const exec = await container.exec({
         AttachStdout: true,
         AttachStderr: true,
@@ -101,8 +103,12 @@ async function startContainer(containerName, env) {
                 SecurityOpt: ['seccomp=unconfined'],
                 PortBindings: {
                     '6000/tcp': [{ HostPort: `${ports[0]}` }],
-                    '4000/tcp': [{ HostPort: 4000 }]
+                    '3000/tcp': [{ HostPort: '3000' }]
                 }
+            },
+            ExposedPorts: {
+                '6000/tcp': {},
+                '3000/tcp': {}
             },
             AttachStdin: false,
             AttachStdout: true,
