@@ -1,7 +1,7 @@
 const { Server, Socket } = require("socket.io");
 const path = require("path")
-const { saveFilesFromGCP, updateFileS3 } = require("./gcp");
-const { fetchDir, fetchFileContent, saveFile } = require("./fs");
+const { saveFilesFromGCP, updateFileS3, createDirectory, copyTemplateCode, directoryExists } = require("./gcp");
+const { fetchDir, fetchFileContent, saveFile} = require("./fs");
 const pty = require('node-pty');
 process.env.HOME = process.cwd();
 const initWs = (httpServer) => {
@@ -16,9 +16,18 @@ const initWs = (httpServer) => {
         io.on("connection", async (socket) => {
             // Auth checks should happen here
             const replId = socket.handshake.query.roomId;
+            const env = socket.handshake.query.env;
             console.log(replId);
             const DIRECTORY_NAME = replId + '/';
+            const SOURCE_FOLDER_NAME = "boilerplate/" + env + "/";
             // console.log(socket)
+            if (!await directoryExists(DIRECTORY_NAME)) {
+                await createDirectory(DIRECTORY_NAME);
+                await copyTemplateCode(SOURCE_FOLDER_NAME, DIRECTORY_NAME);
+            }
+            else {
+                console.log(`Directory ${DIRECTORY_NAME} already exists in GCP bucket!`)
+            }
             await saveFilesFromGCP(DIRECTORY_NAME);
 
             if (!replId) {

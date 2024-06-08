@@ -13,7 +13,7 @@ const OPTIONS_TERM = {
     useStyle: true,
     screenKeys: true,
     cursorBlink: true,
-    cols: 200,
+    cols: 800,
     rows: 26,
     theme: {
         background: "black"

@@ -13,8 +13,8 @@ class TerminalManager {
 
     createPty(id, replId, onData) {
         let term = fork(SHELL, [], {
-            cols: 30,
-            rows: 24,
+            cols: 80,
+            rows: 44,
             name: 'xterm',
             cwd: path.join(process.cwd(), `../tmp/${replId}`)
         });

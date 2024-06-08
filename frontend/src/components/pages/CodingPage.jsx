@@ -26,13 +26,17 @@ const CodingPage = () => {
     const { roomId } = useParams();
     useEffect(() => {
         const fetchData = async () => {
-            const resp = await axios.post(URL, { 'env': state, 'replId': roomId });
-            console.log(resp);
             console.log(roomId)
-            const socket = io(WS_URL + `?roomId=${roomId}&env=${state}`);
-            console.log(socket);
-            setSocket(socket);
-            setLoaded(true);
+            const socket1 = io(WS_URL + `?roomId=${roomId}&env=${state}`);
+            console.log(socket1);
+            socket1.on('containerCreated', (CONTAINER_PORT) => {
+                console.log("Container URL:: ", CONTAINER_PORT)
+                const socket = io(`http://localhost:${CONTAINER_PORT}` + `?roomId=${roomId}&env=${state}`);
+                setSocket(socket);
+                setLoaded(true);
+            })
+            // setSocket(socket);
+            // setLoaded(true);
         }
         fetchData();
     }, []);
