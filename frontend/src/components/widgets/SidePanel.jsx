@@ -44,7 +44,7 @@ import { projectFilesAtom } from "../../recoil/atoms/projectFilesAtom";
 
 
 const SidePanel = ({ socket }) => {
-    let [_data, setData] = useRecoilState(projectFilesAtom);
+    let [_data, setProjectFiles] = useRecoilState(projectFilesAtom);
     const data = useRecoilValue(projectFilesAtom);
     const [_, setSelectedFile] = useRecoilState(selectedFileAtom);
     const selectedFile = useRecoilValue(selectedFileAtom);
@@ -56,7 +56,7 @@ const SidePanel = ({ socket }) => {
             console.log("Files: ", files['rootContent']);
             console.log('Loaded event')
             // console.log(files['rootContent']);
-            setData(fetchedFiles);
+            setProjectFiles(fetchedFiles);
             console.log(data);
         })
     }, [])
@@ -76,7 +76,7 @@ const SidePanel = ({ socket }) => {
             //             else return item;
             //         });
 
-            //         // setData(updatedFiles);
+            //         // setProjectFiles(updatedFiles);
             //         const key = node['node']['path'];
 
             //         setFileContents(content => ({ ...content, [key]: data }))
@@ -108,7 +108,7 @@ const SidePanel = ({ socket }) => {
     //     try {
     //         let savedStructure = JSON.parse(localStorage.getItem("tree"));
     //         if (savedStructure) {
-    //             setData(savedStructure);
+    //             setProjectFiles(savedStructure);
     //         }
     //     } catch (err) {
     //         console.log(err);
