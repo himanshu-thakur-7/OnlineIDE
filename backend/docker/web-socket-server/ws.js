@@ -1,7 +1,7 @@
 const { Server, Socket } = require("socket.io");
 const path = require("path")
 const { saveFilesFromGCP, updateFileS3, createDirectory, copyTemplateCode, directoryExists } = require("./gcp");
-const { fetchDir, fetchFileContent, saveFile} = require("./fs");
+const { fetchDir, fetchFileContent, saveFile } = require("./fs");
 const pty = require('node-pty');
 process.env.HOME = process.cwd();
 const initWs = (httpServer) => {
@@ -55,7 +55,8 @@ const helper = (socket, replId) => {
     })
 
     socket.on('fetchDir', async (dirname, cb) => {
-        const contents = await fetchDir(`tmp/${replId}/${dirname}`, dirname);
+        console.log(dirname['path']);
+        const contents = await fetchDir(`tmp/${replId}${dirname['path']}`, dirname['path']);
         cb(contents);
     })
     socket.on('fetchContent', async (filePath, cb) => {

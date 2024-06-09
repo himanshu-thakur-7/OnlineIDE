@@ -12,10 +12,12 @@ const initOrchestrator = (httpServer) => {
     });
     try {
         wsServer1.on("connection", async (socket) => {
+            console.log(socket);
             const replId = socket.handshake.query.roomId;
             const env = socket.handshake.query.env;
+
             console.log(replId, env);
-            let { containerId, webSocketPort,devPort } = await startContainer(replId, env);
+            let { containerId, webSocketPort, devPort } = await startContainer(replId, env);
             console.log(webSocketPort)
             if (webSocketPort === -1) {
                 webSocketPort = connections[containerId][0]['WS_PORT'];
@@ -25,11 +27,11 @@ const initOrchestrator = (httpServer) => {
             }
             console.log(`Container Id: ${containerId}`);
             connections[containerId] = connections[containerId] || [];
-            connections[containerId].push({ 'socketId': socket.id, 'WS_PORT': webSocketPort,'DEV_PORT':devPort });
+            connections[containerId].push({ 'socketId': socket.id, 'WS_PORT': webSocketPort, 'DEV_PORT': devPort });
 
             console.log(webSocketPort);
             console.log(connections);
-            socket.emit('containerCreated', {'webSocketPort': webSocketPort,'devPort':devPort});
+            socket.emit('containerCreated', { 'webSocketPort': webSocketPort, 'devPort': devPort });
 
             // relayEvents(socket,webServer2,terminal);
             // terminal.on('data', (data) => {
@@ -42,7 +44,7 @@ const initOrchestrator = (httpServer) => {
 
             socket.on('disconnect', async () => {
                 console.log('Client disconnected');
-                connections[containerId] = connections[containerId].filter(conn => conn !== socket);
+                connections[containerId] = connections[containerId].filter(conn => conn['socketId'] !== socket);
                 if (connections[containerId].length === 0) {
                     delete connections[containerId];
                     await stopContainer(containerId);

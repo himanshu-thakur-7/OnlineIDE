@@ -63,8 +63,8 @@ const SidePanel = ({ socket }) => {
 
     console.log(`Side Panel Data: ${JSON.stringify(data)}`)
 
-    const handleClick = (node) => {
-        console.log(node)
+    const handleClick = async (node) => {
+        // console.log(node['node']['type'] === 'folder')
         if (node['node']['type'] === "file" && node['node']['path'] !== selectedFile['path']) {
             console.log(JSON.stringify(node['node']['path']))
             // if (node['node']['content'] === false || node['node']['content'] === "") {
@@ -90,6 +90,27 @@ const SidePanel = ({ socket }) => {
             console.log(selectedFileAtom);
             console.log(node);
 
+        }
+        if (node['node']['type'] === 'folder') {
+            console.log(node['node']['path'])
+            if (!node['node']['content']) {
+                socket?.emit("fetchDir", { path: node['node']['path'] }, (data) => {
+                    // console.log(data)
+                    // // node['node']['content'] = data;
+                    let updatedFiles = [..._data].map((item) => {
+                        if (item.path === node['node']['path']) return { ...item, files: data, content: true };
+                        else return item;
+                    });
+
+                    setProjectFiles(updatedFiles);
+                    // const key = node['node']['path'];
+
+                    // setFileContents(content => ({ ...content, [key]: data }))
+                    console.log(data);
+                    // setSelectedFile(file);
+                });
+            }
+            // fetch files for this folder and save it in its files array
         }
     };
     const handleUpdate = (state) => {

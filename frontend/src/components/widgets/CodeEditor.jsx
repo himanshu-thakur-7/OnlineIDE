@@ -30,7 +30,7 @@ const CodeEditor = ({ socket }) => {
     }, [monaco]);
 
     useEffect(() => {
-        if (selectedFile['path'] && !(selectedFile['path'] in files)) {
+        if (selectedFile['path']) {
             socket?.emit("fetchContent", { path: selectedFile['path'] }, (data) => {
                 setFileContents(content => ({ ...content, [selectedFile['path']]: data }));
             });

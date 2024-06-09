@@ -12,9 +12,11 @@ const fetchDir = (dir, baseDir) => {
                     // console.log(file.name);
                     console.log(file.name)
                     return ({
-                        type: file.isDirectory() ? "dir" : "file",
+                        type: file.isDirectory() ? "folder" : "file",
                         name: file.name,
-                        path: `${baseDir}/${file.name}`
+                        path: `${baseDir}/${file.name}`,
+                        files: [],
+                        content: false
                     })
 
                 }));
