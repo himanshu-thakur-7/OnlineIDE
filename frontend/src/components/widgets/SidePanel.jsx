@@ -3,44 +3,6 @@ import Tree from "./Tree/Tree";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedFileAtom } from "../../recoil/atoms/selectedFileAtom";
 import { projectFilesAtom } from "../../recoil/atoms/projectFilesAtom";
-// const structure = [
-//     {
-//         type: "folder",
-//         name: "client",
-//         files: [
-//             {
-//                 type: "folder",
-//                 name: "ui",
-//                 files: [
-//                     { type: "file", name: "Toggle.js" },
-//                     { type: "file", name: "Button.js" },
-//                     { type: "file", name: "Button.style.js" },
-//                 ],
-//             },
-//             {
-//                 type: "folder",
-//                 name: "components",
-//                 files: [
-//                     { type: "file", name: "Tree.js" },
-//                     { type: "file", name: "Tree.style.js" },
-//                 ],
-//             },
-//             { type: "file", name: "setup.js" },
-//             { type: "file", name: "setupTests.js" },
-//         ],
-//     },
-//     {
-//         type: "folder",
-//         name: "packages",
-//         files: [
-//             {
-//                 type: "file",
-//                 name: "main.js",
-//             },
-//         ],
-//     },
-//     { type: "file", name: "index.js" },
-// ];
 
 
 const SidePanel = ({ socket }) => {
@@ -67,22 +29,7 @@ const SidePanel = ({ socket }) => {
         // console.log(node['node']['type'] === 'folder')
         if (node['node']['type'] === "file" && node['node']['path'] !== selectedFile['path']) {
             console.log(JSON.stringify(node['node']['path']))
-            // if (node['node']['content'] === false || node['node']['content'] === "") {
-            //     socket?.emit("fetchContent", { path: node['node']['path'] }, (data) => {
-            //         // console.log(data)
-            //         // // node['node']['content'] = data;
-            //         let updatedFiles = [..._data].map((item) => {
-            //             if (item.path === node['node']['path']) return { ...item, content: true };
-            //             else return item;
-            //         });
 
-            //         // setProjectFiles(updatedFiles);
-            //         const key = node['node']['path'];
-
-            //         setFileContents(content => ({ ...content, [key]: data }))
-            //         // setSelectedFile(file);
-            //     });
-            // }
             setSelectedFile({ 'path': node['node']['path'], 'name': node['node']['name'] });
             console.log(`Side Panel 78: ${JSON.stringify(selectedFile)}`)
 
@@ -103,9 +50,6 @@ const SidePanel = ({ socket }) => {
                     });
 
                     setProjectFiles(updatedFiles);
-                    // const key = node['node']['path'];
-
-                    // setFileContents(content => ({ ...content, [key]: data }))
                     console.log(data);
                     // setSelectedFile(file);
                 });
@@ -123,6 +67,7 @@ const SidePanel = ({ socket }) => {
         //         return value;
         //     })
         // );
+        console.log(state);
     };
 
     // useLayoutEffect(() => {

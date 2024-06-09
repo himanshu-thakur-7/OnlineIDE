@@ -12,7 +12,6 @@ const initOrchestrator = (httpServer) => {
     });
     try {
         wsServer1.on("connection", async (socket) => {
-            console.log(socket);
             const replId = socket.handshake.query.roomId;
             const env = socket.handshake.query.env;
 
@@ -43,8 +42,9 @@ const initOrchestrator = (httpServer) => {
             // });
 
             socket.on('disconnect', async () => {
-                console.log('Client disconnected');
-                connections[containerId] = connections[containerId].filter(conn => conn['socketId'] !== socket);
+                console.log('Client disconnected!');
+                connections[containerId] = connections[containerId].filter(conn => conn['socketId'] !== socket.id);
+                console.log(connections);
                 if (connections[containerId].length === 0) {
                     delete connections[containerId];
                     await stopContainer(containerId);

@@ -46,11 +46,11 @@ const CodingPage = () => {
 
 
     return <div className="bg-cyan-950 h-screen text-yellow-100 items-center justify-center">
-        {loaded === true ? <div className="grid grid-cols-8 bg-cyan-950 h-screen w-screen text-yellow-100 divide-x-2 px-4">
+        {loaded === true ? <div className="grid grid-cols-10 bg-cyan-950 h-screen w-screen text-yellow-100 divide-x-2 px-4">
             <div className='col-span-2  p-4'>
                 <SidePanel socket={_socket} />
             </div>
-            <div className='col-span-3  p-4'>
+            <div className='col-span-5  p-4'>
                 <CodeEditor socket={_socket} />
             </div>
             <div className='col-span-3 p-4 '>

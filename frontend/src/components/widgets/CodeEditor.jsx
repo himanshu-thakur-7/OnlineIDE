@@ -9,7 +9,13 @@ import { fileContentsAtom } from "../../recoil/atoms/fileContentsAtom";
 const types = {
     "js": "javascript",
     "py": "python",
-    "json": "json"
+    "json": "json",
+    "css": "css",
+    "md": "markdown",
+    "html": "html",
+    "rs": "rust",
+    "go": "go",
+    "ts": "typescript"
 }
 
 const CodeEditor = ({ socket }) => {
@@ -30,12 +36,13 @@ const CodeEditor = ({ socket }) => {
     }, [monaco]);
 
     useEffect(() => {
+        console.log("Fetching")
         if (selectedFile['path']) {
             socket?.emit("fetchContent", { path: selectedFile['path'] }, (data) => {
                 setFileContents(content => ({ ...content, [selectedFile['path']]: data }));
             });
         }
-    }, [selectedFile, files, setFileContents, socket]);
+    }, [selectedFile, setFileContents, socket]);
 
     const updateFileContent = useCallback(
         debounce((data) => {
