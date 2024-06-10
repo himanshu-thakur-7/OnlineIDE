@@ -3,11 +3,13 @@ const { startContainer, stopContainer } = require('./dockerService');
 const { _ } = require("lodash")
 
 const connections = {};
+const debounceMap = {};
 
 const stopContainerDebounced = _.debounce(async (containerId) => {
     if (connections[containerId] && connections[containerId]['sockets'].length === 0) {
         await stopContainer(containerId);
         delete connections[containerId];
+        delete debounceMap[containerId];
         console.log(`Container ${containerId} stopped and removed from connections.`);
     }
 }, 10000);
@@ -40,13 +42,23 @@ const initOrchestrator = (httpServer) => {
             console.log(webSocketPort);
             console.log(connections);
             socket.emit('containerCreated', { 'webSocketPort': webSocketPort, 'devPort': devPort });
-
+            
+            if (!debounceMap[containerId]) {
+                debounceMap[containerId] = _.debounce(async () => {
+                    if (connections[containerId] && connections[containerId]['sockets'].length === 0) {
+                        await stopContainer(containerId);
+                        delete connections[containerId];
+                        delete debounceMap[containerId];
+                        console.log(`Container ${containerId} stopped and removed from connections.`);
+                    }
+                }, 10000); // 10 seconds
+            }
             socket.on('disconnect', async () => {
                 console.log('Client disconnected!');
                 connections[containerId]['sockets'] = connections[containerId]['sockets'].filter(conn => conn !== socket.id);
                 console.log(connections);
-                
-                stopContainerDebounced(containerId);
+
+                debounceMap[containerId]();
             });
         })
     }
