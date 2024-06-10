@@ -1,8 +1,16 @@
 const { Server } = require("socket.io");
 const { startContainer, stopContainer } = require('./dockerService');
-
+const { _ } = require("lodash")
 
 const connections = {};
+
+const stopContainerDebounced = _.debounce(async (containerId) => {
+    if (connections[containerId] && connections[containerId]['sockets'].length === 0) {
+        await stopContainer(containerId);
+        delete connections[containerId];
+        console.log(`Container ${containerId} stopped and removed from connections.`);
+    }
+}, 10000);
 const initOrchestrator = (httpServer) => {
     const wsServer1 = new Server(httpServer, {
         cors: {
@@ -18,15 +26,16 @@ const initOrchestrator = (httpServer) => {
             console.log(replId, env);
             let { containerId, webSocketPort, devPort } = await startContainer(replId, env);
             console.log(webSocketPort)
+
+            connections[containerId] = connections[containerId] || { 'sockets': [], 'WS_PORT': webSocketPort, 'DEV_PORT': devPort };
             if (webSocketPort === -1) {
-                webSocketPort = connections[containerId][0]['WS_PORT'];
+                webSocketPort = connections[containerId]['WS_PORT'];
             }
             if (devPort === -1) {
-                devPort = connections[containerId][0]['DEV_PORT'];
+                devPort = connections[containerId]['DEV_PORT'];
             }
             console.log(`Container Id: ${containerId}`);
-            connections[containerId] = connections[containerId] || [];
-            connections[containerId].push({ 'socketId': socket.id, 'WS_PORT': webSocketPort, 'DEV_PORT': devPort });
+            connections[containerId] = { 'sockets': [...connections[containerId]['sockets'], socket.id], 'WS_PORT': webSocketPort, 'DEV_PORT': devPort };
 
             console.log(webSocketPort);
             console.log(connections);
@@ -34,12 +43,10 @@ const initOrchestrator = (httpServer) => {
 
             socket.on('disconnect', async () => {
                 console.log('Client disconnected!');
-                connections[containerId] = connections[containerId].filter(conn => conn['socketId'] !== socket.id);
+                connections[containerId]['sockets'] = connections[containerId]['sockets'].filter(conn => conn !== socket.id);
                 console.log(connections);
-                if (connections[containerId].length === 0) {
-                    delete connections[containerId];
-                    await stopContainer(containerId);
-                }
+                
+                stopContainerDebounced(containerId);
             });
         })
     }
