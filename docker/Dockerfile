@@ -5,7 +5,7 @@ FROM nixos/nix
 CMD ["/run/current-system/sw/bin/nix-daemon", "--filter-syscalls=false"]
 
 # Install nodejs and socket.io
-RUN nix-env -iA nixpkgs.nodejs nixpkgs.python3 nixpkgs.gnumake nixpkgs.gcc nixpkgs.coreutils nixpkgs.findutils nixpkgs.gnugrep nixpkgs.gnused nixpkgs.gawk
+RUN nix-env -iA nixpkgs.nodejs nixpkgs.python3 nixpkgs.python311Packages.pip nixpkgs.gnumake nixpkgs.gcc nixpkgs.coreutils nixpkgs.findutils nixpkgs.gnugrep nixpkgs.gnused nixpkgs.gawk
 
 
 WORKDIR /web-socket-server
