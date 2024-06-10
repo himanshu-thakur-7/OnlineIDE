@@ -133,8 +133,12 @@ async function startContainer(containerName, env) {
         });
         terminals[containerId] = terminal;
     }
+    const data = await container.inspect();
+    const webSocketPort = data.NetworkSettings.Ports['6000/tcp'] ? data.NetworkSettings.Ports['6000/tcp'][0].HostPort : -1;
+    const devPort = data.NetworkSettings.Ports['3000/tcp'] ? data.NetworkSettings.Ports['3000/tcp'][0].HostPort : -1;
+
     // console.log("PORTS:::", ports)
-    return { containerId: containerId, webSocketPort: ports.length > 0 ? ports[0] : -1 ,devPort: ports.length > 0 ? ports[1]: -1};
+    return { containerId: containerId, webSocketPort: webSocketPort, devPort: devPort };
 }
 
 async function stopContainer(containerId) {
