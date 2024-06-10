@@ -4,7 +4,6 @@ const docker = new Docker();
 const pty = require('node-pty');
 
 const containers = {};
-const terminals = {};
 
 async function findAvailablePorts(count) {
     const ports = [];
@@ -126,15 +125,6 @@ async function startContainer(containerName, env) {
     const containerId = container.id;
     containers[containerId] = container;
 
-    if (!terminals[containerId]) {
-        // Create a pseudo-terminal session
-        const terminal = pty.spawn('docker', ['exec', '-it', containerId, '/bin/sh'], {
-            name: 'xterm-color',
-            cols: 80,
-            rows: 30
-        });
-        terminals[containerId] = terminal;
-    }
     const data = await container.inspect();
     const webSocketPort = data.NetworkSettings.Ports['6000/tcp'] ? data.NetworkSettings.Ports['6000/tcp'][0].HostPort : -1;
     const devPort = data.NetworkSettings.Ports['3000/tcp'] ? data.NetworkSettings.Ports['3000/tcp'][0].HostPort : -1;
@@ -145,7 +135,6 @@ async function startContainer(containerName, env) {
 
 async function stopContainer(containerId) {
     const container = containers[containerId];
-    const terminal = terminals[containerId];
 
     if (container) {
         await container.stop();
@@ -153,10 +142,6 @@ async function stopContainer(containerId) {
         delete containers[containerId];
     }
 
-    if (terminal) {
-        terminal.kill();
-        delete terminals[containerId];
-    }
 }
 
-module.exports = { startContainer, stopContainer, terminals };
+module.exports = { startContainer, stopContainer };
