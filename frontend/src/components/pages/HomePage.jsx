@@ -2,7 +2,6 @@ import Select from "react-tailwindcss-select";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import SnackBar from "../widgets/Snackbar";
-import axios from "axios";
 import { generateSlug } from "random-word-slugs";
 
 // import Loader from "../widgets/Loader";
@@ -10,7 +9,8 @@ const options = [
     { value: "nodejs", label: "🚀 Nodejs" },
     { value: "python", label: "🐍 Python" },
     { value: "react", "label": "⚛️ React" },
-    { value: "go", label: "🐹 Go" }
+    { value: "go", label: "🐹 Go" },
+    { value: "cargo", label: "🦀 Rust" }
 
 ];
 
