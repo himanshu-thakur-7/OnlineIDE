@@ -1,4 +1,4 @@
-const { Server, Socket } = require("socket.io");
+const { Server } = require("socket.io");
 const path = require("path")
 const { saveFilesFromGCP, updateFileS3, createDirectory, copyTemplateCode, directoryExists } = require("./gcp");
 const { fetchDir, fetchFileContent, saveFile } = require("./fs");
@@ -20,7 +20,7 @@ const initWs = (httpServer) => {
             console.log(replId);
             const DIRECTORY_NAME = replId + '/';
             const SOURCE_FOLDER_NAME = "boilerplate/" + env + "/";
-            // console.log(socket)
+        
             if (!await directoryExists(DIRECTORY_NAME)) {
                 await createDirectory(DIRECTORY_NAME);
                 await copyTemplateCode(SOURCE_FOLDER_NAME, DIRECTORY_NAME);
@@ -88,11 +88,10 @@ const helper = (socket, replId) => {
     });
 
     socket.on("updateContent", async ({ path, content }) => {
-        // console.log(content);
-        // const fullPath = path.join(__dirname, `../tmp/${replId}/${filePath}`);
+
         await saveFile(`tmp/${replId}${path}`, content);
         await updateFileS3(`${replId}${path}`, content);
-        // await saveToS3(`code/${replId}`, filePath, content);
+
     });
 
     socket.on('disconnect', () => {
