@@ -37,10 +37,12 @@ async function isPackageInstalled(container, packageName) {
         stream.on('data', data => {
             output += data.toString();
         });
-        stream.on('end', () => resolve(output));
+        stream.on('end', () => {
+            resolve(output)
+        });
         stream.on('error', err => reject(err));
     });
-    return output.includes(packageName);
+    return !output.includes(`error: selector '${packageName}'`);
 }
 
 async function installPackage(container, packageName) {

@@ -9,7 +9,8 @@ import { generateSlug } from "random-word-slugs";
 const options = [
     { value: "nodejs", label: "🚀 Nodejs" },
     { value: "python", label: "🐍 Python" },
-    { value: "react", "label": "⚛️ React" }
+    { value: "react", "label": "⚛️ React" },
+    { value: "go", label: "🦋 Go Lang" }
 
 ];
 
