@@ -32,15 +32,6 @@ const initOrchestrator = (httpServer) => {
             console.log(connections);
             socket.emit('containerCreated', { 'webSocketPort': webSocketPort, 'devPort': devPort });
 
-            // relayEvents(socket,webServer2,terminal);
-            // terminal.on('data', (data) => {
-            //     socket.emit('output', data);
-            // });
-
-            // terminal.on('terminalInput', (input) => {
-            //     terminal.write(input); ``
-            // });
-
             socket.on('disconnect', async () => {
                 console.log('Client disconnected!');
                 connections[containerId] = connections[containerId].filter(conn => conn['socketId'] !== socket.id);

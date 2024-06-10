@@ -83,16 +83,6 @@ async function startContainer(containerName, env) {
     if (!container) {
         ports = await findAvailablePorts(2);
 
-        // portfinder.getPorts(count = 2, {}, callback = (err, op) => {
-        //     if (err) {
-        //         console.log("Error Finding PORT:::", err);
-        //     }
-        //     else {
-        //         ports = [...op];
-        //         console.log(ports);
-        //         console.log("OP::::", op);
-        //     }
-        // });
         console.log("PORTS::::", ports);
         container = await docker.createContainer({
             Image: 'my-nix-node-image',
