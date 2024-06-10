@@ -5,14 +5,6 @@ const { _ } = require("lodash")
 const connections = {};
 const debounceMap = {};
 
-const stopContainerDebounced = _.debounce(async (containerId) => {
-    if (connections[containerId] && connections[containerId]['sockets'].length === 0) {
-        await stopContainer(containerId);
-        delete connections[containerId];
-        delete debounceMap[containerId];
-        console.log(`Container ${containerId} stopped and removed from connections.`);
-    }
-}, 10000);
 const initOrchestrator = (httpServer) => {
     const wsServer1 = new Server(httpServer, {
         cors: {
@@ -38,11 +30,9 @@ const initOrchestrator = (httpServer) => {
             }
             console.log(`Container Id: ${containerId}`);
             connections[containerId] = { 'sockets': [...connections[containerId]['sockets'], socket.id], 'WS_PORT': webSocketPort, 'DEV_PORT': devPort };
-
-            console.log(webSocketPort);
             console.log(connections);
             socket.emit('containerCreated', { 'webSocketPort': webSocketPort, 'devPort': devPort });
-            
+
             if (!debounceMap[containerId]) {
                 debounceMap[containerId] = _.debounce(async () => {
                     if (connections[containerId] && connections[containerId]['sockets'].length === 0) {

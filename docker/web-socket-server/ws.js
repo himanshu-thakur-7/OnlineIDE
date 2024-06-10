@@ -5,7 +5,6 @@ const { fetchDir, fetchFileContent, saveFile } = require("./fs");
 const pty = require('node-pty');
 process.env.HOME = process.cwd();
 const initWs = (httpServer) => {
-    console.log('hi line 6')
     const io = new Server(httpServer, {
         cors: {
             origin: "*",
@@ -20,7 +19,7 @@ const initWs = (httpServer) => {
             console.log(replId);
             const DIRECTORY_NAME = replId + '/';
             const SOURCE_FOLDER_NAME = "boilerplate/" + env + "/";
-        
+
             if (!await directoryExists(DIRECTORY_NAME)) {
                 await createDirectory(DIRECTORY_NAME);
                 await copyTemplateCode(SOURCE_FOLDER_NAME, DIRECTORY_NAME);
