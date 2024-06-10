@@ -67,7 +67,7 @@ const copyTemplateCode = async (SOURCE_FOLDER_NAME, directoryName) => {
 
 const saveFilesFromGCP = async (FOLDER_NAME) => {
     // Creates a client
-    let LOCAL_FOLDER_PATH = process.env.HOME + '/tmp/';
+    let LOCAL_FOLDER_PATH = 'tmp/';
     LOCAL_FOLDER_PATH += FOLDER_NAME;
     try {
         const [files] = await bucket.getFiles({
