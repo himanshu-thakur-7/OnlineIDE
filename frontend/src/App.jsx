@@ -9,7 +9,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/codingPage/:roomId" element={<CodingPage />} />
+      <Route path="/codingPage/:roomId/:env" element={<CodingPage />} />
       <Route
         path="*"
         element={<ErrorPage />}

@@ -28,9 +28,7 @@ const HomePage = () => {
         else {
 
             const slug = generateSlug(3);
-            navigate(`/codingPage/${slug}`, {
-                state: env.value
-            })
+            navigate(`/codingPage/${slug}/${env.value}`)
         }
     }
 

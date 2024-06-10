@@ -1,15 +1,13 @@
 import SidePanel from "../widgets/SidePanel";
 import CodeEditor from "../widgets/CodeEditor";
-import TerminalComponent from "../widgets/Terminal";
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import Loader from "../widgets/Loader"
 import { io } from 'socket.io-client';
 
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { projectFilesAtom } from "../../recoil/atoms/projectFilesAtom";
 import { devUrlAtom } from "../../recoil/atoms/devUrlAtom";
 import OutputPane from "../widgets/OutputPane";
 
@@ -19,27 +17,22 @@ const WS_URL = 'http://localhost:8000';
 const URL = "http://localhost:8000/project"
 const CodingPage = () => {
     const [_socket, setSocket] = useState(null);
-    const [projFiles, setProjectFiles] = useRecoilState(projectFilesAtom);
     const [_devURL, setDevURL] = useRecoilState(devUrlAtom);
     const devUrl = useRecoilValue(devUrlAtom);
-    const { state } = useLocation();
-    console.log(state)
+    // console.log(state)
     const [loaded, setLoaded] = useState(false);
-    const { roomId } = useParams();
+    const { roomId, env } = useParams();
     useEffect(() => {
         const fetchData = async () => {
             console.log(roomId)
-            const socket1 = io(WS_URL + `?roomId=${roomId}&env=${state}`);
-            console.log(socket1);
+            const socket1 = io(WS_URL + `?roomId=${roomId}&env=${env}`);
             socket1.on('containerCreated', ({ webSocketPort, devPort }) => {
                 console.log("Container URL:: ", webSocketPort)
-                const socket = io(`http://localhost:${webSocketPort}` + `?roomId=${roomId}&env=${state}`);
+                const socket = io(`http://localhost:${webSocketPort}` + `?roomId=${roomId}&env=${env}`);
                 setDevURL(`http://localhost:${devPort}`)
                 setSocket(socket);
                 setLoaded(true);
             })
-            // setSocket(socket);
-            // setLoaded(true);
         }
         fetchData();
     }, []);
