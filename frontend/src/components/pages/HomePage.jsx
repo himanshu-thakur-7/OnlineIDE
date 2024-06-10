@@ -10,7 +10,7 @@ const options = [
     { value: "nodejs", label: "🚀 Nodejs" },
     { value: "python", label: "🐍 Python" },
     { value: "react", "label": "⚛️ React" },
-    { value: "go", label: "🦋 Go Lang" }
+    { value: "go", label: "🐹 Go" }
 
 ];
 
