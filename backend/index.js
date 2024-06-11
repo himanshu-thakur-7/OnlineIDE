@@ -10,7 +10,7 @@ app.use(express.json());
 
 const httpServer = createServer(app);
 
-// initHttp(app);
+// Initialize Orchestrator
 initOrchestrator(httpServer);
 
 httpServer.listen(PORT, () => {

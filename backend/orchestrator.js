@@ -2,10 +2,13 @@ const { Server } = require("socket.io");
 const { startContainer, stopContainer } = require('./dockerService');
 const { _ } = require("lodash")
 
+// For saving connections and containers status
 const connections = {};
+// For saving debounced stop container functions for each container
 const debounceMap = {};
 
 const initOrchestrator = (httpServer) => {
+    // Initialize Socket IO server
     const wsServer1 = new Server(httpServer, {
         cors: {
             origin: "*",
@@ -14,27 +17,27 @@ const initOrchestrator = (httpServer) => {
     });
     try {
         wsServer1.on("connection", async (socket) => {
-            const replId = socket.handshake.query.roomId;
+
+            // Get room id and env from query params
+            const roomId = socket.handshake.query.roomId;
             const env = socket.handshake.query.env;
 
-            console.log(replId, env);
-            let { containerId, webSocketPort, devPort } = await startContainer(replId, env);
-            console.log(webSocketPort)
+            // Initialize and start the container
+            let { containerId, webSocketPort, devPort } = await startContainer(roomId, env);
 
+            // Initialize container info object
             connections[containerId] = connections[containerId] || { 'sockets': [], 'WS_PORT': webSocketPort, 'DEV_PORT': devPort };
-            if (webSocketPort === -1) {
-                webSocketPort = connections[containerId]['WS_PORT'];
-            }
-            if (devPort === -1) {
-                devPort = connections[containerId]['DEV_PORT'];
-            }
+
             console.log(`Container Id: ${containerId}`);
             connections[containerId] = { 'sockets': [...connections[containerId]['sockets'], socket.id], 'WS_PORT': webSocketPort, 'DEV_PORT': devPort };
             console.log(connections);
+            // Emit container created event and sending ports info
             socket.emit('containerCreated', { 'webSocketPort': webSocketPort, 'devPort': devPort });
 
+            // Initialize debounce map
             if (!debounceMap[containerId]) {
                 debounceMap[containerId] = _.debounce(async () => {
+                    // If no one has connected to the container for more than 10 secs , delete it.
                     if (connections[containerId] && connections[containerId]['sockets'].length === 0) {
                         await stopContainer(containerId);
                         delete connections[containerId];
@@ -43,6 +46,7 @@ const initOrchestrator = (httpServer) => {
                     }
                 }, 10000); // 10 seconds
             }
+            // On client disconnect perform cleanup
             socket.on('disconnect', async () => {
                 console.log('Client disconnected!');
                 connections[containerId]['sockets'] = connections[containerId]['sockets'].filter(conn => conn !== socket.id);
