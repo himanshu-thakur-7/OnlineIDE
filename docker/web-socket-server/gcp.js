@@ -1,8 +1,8 @@
 const { Storage } = require('@google-cloud/storage');
 const fs = require('fs');
 const path = require('path');
-let LOCAL_FOLDER_PATH = 'tmp/';  // Local folder where files will be saved
 
+// Initializing gcp storage variable
 const storage = new Storage({
     keyFilename: "./keys/gcp_key.json"
 });
@@ -10,6 +10,7 @@ const storage = new Storage({
 const BUCKET_NAME = "ide7781";
 const bucket = storage.bucket(BUCKET_NAME);
 
+// check if a directory already exists in GCP
 async function directoryExists(directoryPath) {
     // Adding a trailing slash if it's not present
     if (!directoryPath.endsWith('/')) {
@@ -21,6 +22,7 @@ async function directoryExists(directoryPath) {
     return files.length > 0;
 }
 
+// create a directory in gcp
 const createDirectory = async (directoryName) => {
     try {
         await bucket.file(directoryName).save('')
@@ -37,6 +39,7 @@ const createDirectory = async (directoryName) => {
 
 }
 
+// copy template code for an env into user's directory
 const copyTemplateCode = async (SOURCE_FOLDER_NAME, directoryName) => {
     try {
 
@@ -65,6 +68,7 @@ const copyTemplateCode = async (SOURCE_FOLDER_NAME, directoryName) => {
     }
 }
 
+// save files from GCP bucket to local storage
 const saveFilesFromGCP = async (FOLDER_NAME) => {
     // Creates a client
     let LOCAL_FOLDER_PATH = 'tmp/';
@@ -108,6 +112,7 @@ const saveFilesFromGCP = async (FOLDER_NAME) => {
     }
 }
 
+// Update file content from local storage to GCP bucket
 async function updateFileS3(fileName, newContent) {
     try {
         // Create a reference to the file in the bucket

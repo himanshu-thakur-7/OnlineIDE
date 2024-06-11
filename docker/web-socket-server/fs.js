@@ -1,4 +1,5 @@
 const fs = require("fs");
+// fetch all directories and file names present inside a given directory
 const fetchDir = (dir, baseDir) => {
     return new Promise((resolve, reject) => {
         fs.readdir(dir, { withFileTypes: true }, (err, files) => {
@@ -22,7 +23,7 @@ const fetchDir = (dir, baseDir) => {
     });
 }
 
-
+// fetch the content of a given file
 const fetchFileContent = (file) => {
     return new Promise((resolve, reject) => {
         fs.readFile(file, "utf8", (err, data) => {
@@ -35,6 +36,7 @@ const fetchFileContent = (file) => {
     })
 }
 
+// save the updated contents of a file
 const saveFile = async (file, content) => {
     return new Promise((resolve, reject) => {
         fs.writeFile(file, content, "utf8", (err) => {
