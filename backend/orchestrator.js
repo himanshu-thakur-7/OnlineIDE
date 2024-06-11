@@ -9,14 +9,14 @@ const debounceMap = {};
 
 const initOrchestrator = (httpServer) => {
     // Initialize Socket IO server
-    const wsServer1 = new Server(httpServer, {
+    const orchestrator = new Server(httpServer, {
         cors: {
             origin: "*",
             methods: ["GET", "POST"]
         }
     });
     try {
-        wsServer1.on("connection", async (socket) => {
+        orchestrator.on("connection", async (socket) => {
 
             // Get room id and env from query params
             const roomId = socket.handshake.query.roomId;
