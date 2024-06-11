@@ -1,13 +1,9 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './react-tabs.css';
 import TerminalComponent from "../widgets/Terminal";
-import { devUrlAtom } from "../../recoil/atoms/devUrlAtom";
-
-import { useRecoilValue } from "recoil";
 
 
 const OutputPane = ({ socket }) => {
-    const devUrl = useRecoilValue(devUrlAtom);
 
     return <Tabs onSelect={() => console.log('selected')}>
         <TabList>

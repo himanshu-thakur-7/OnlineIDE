@@ -2,7 +2,7 @@
 const ErrorPage = () => {
 
     return <div>
-        No server running! Start one via the terminal
+        404
     </div>
 }
 

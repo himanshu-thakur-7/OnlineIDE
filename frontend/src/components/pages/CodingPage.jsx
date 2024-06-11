@@ -2,19 +2,13 @@ import SidePanel from "../widgets/SidePanel";
 import CodeEditor from "../widgets/CodeEditor";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
-
 import Loader from "../widgets/Loader"
 import { io } from 'socket.io-client';
-
 import { useRecoilState, useRecoilValue } from "recoil";
-
 import { devUrlAtom } from "../../recoil/atoms/devUrlAtom";
 import OutputPane from "../widgets/OutputPane";
-
 const WS_URL = 'http://localhost:8000';
 
-
-const URL = "http://localhost:8000/project"
 const CodingPage = () => {
     const [_socket, setSocket] = useState(null);
     const [_devURL, setDevURL] = useRecoilState(devUrlAtom);

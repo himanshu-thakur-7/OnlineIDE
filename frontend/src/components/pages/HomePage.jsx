@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import SnackBar from "../widgets/Snackbar";
 import { generateSlug } from "random-word-slugs";
 
-// import Loader from "../widgets/Loader";
 const options = [
     { value: "nodejs", label: "🚀 Nodejs" },
     { value: "python", label: "🐍 Python" },
@@ -14,7 +13,6 @@ const options = [
 
 ];
 
-const URL = "http://localhost:8000/project"
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -61,7 +59,6 @@ const HomePage = () => {
                     </span>
                 </button>
             </div>
-            {/* <Loader /> */}
             {showSnackBar ? <SnackBar /> : <div></div>}
         </div>
 

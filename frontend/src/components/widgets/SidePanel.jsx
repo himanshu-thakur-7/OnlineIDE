@@ -17,7 +17,6 @@ const SidePanel = ({ socket }) => {
             const fetchedFiles = files["rootContent"].filter((d) => d !== null)
             console.log("Files: ", files['rootContent']);
             console.log('Loaded event')
-            // console.log(files['rootContent']);
             setProjectFiles(fetchedFiles);
             console.log(data);
         })
@@ -26,7 +25,6 @@ const SidePanel = ({ socket }) => {
     console.log(`Side Panel Data: ${JSON.stringify(data)}`)
 
     const handleClick = async (node) => {
-        // console.log(node['node']['type'] === 'folder')
         if (node['node']['type'] === "file" && node['node']['path'] !== selectedFile['path']) {
             console.log(JSON.stringify(node['node']['path']))
 
@@ -42,8 +40,6 @@ const SidePanel = ({ socket }) => {
             console.log(node['node']['path'])
             if (!node['node']['content']) {
                 socket?.emit("fetchDir", { path: node['node']['path'] }, (data) => {
-                    // console.log(data)
-                    // // node['node']['content'] = data;
                     let updatedFiles = [..._data].map((item) => {
                         if (item.path === node['node']['path']) return { ...item, files: data, content: true };
                         else return item;
@@ -51,35 +47,17 @@ const SidePanel = ({ socket }) => {
 
                     setProjectFiles(updatedFiles);
                     console.log(data);
-                    // setSelectedFile(file);
                 });
             }
             // fetch files for this folder and save it in its files array
         }
     };
     const handleUpdate = (state) => {
-        // localStorage.setItem(
-        //     "tree",
-        //     JSON.stringify(state, function (key, value) {
-        //         if (key === "parentNode" || key === "id") {
-        //             return null;
-        //         }
-        //         return value;
-        //     })
-        // );
+        // TODO: Function to handle file name changes / creation / deletion 
         console.log(state);
     };
 
-    // useLayoutEffect(() => {
-    //     try {
-    //         let savedStructure = JSON.parse(localStorage.getItem("tree"));
-    //         if (savedStructure) {
-    //             setProjectFiles(savedStructure);
-    //         }
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }, []);
+
     return <div>
         {
             data ? <Tree data={data} onUpdate={handleUpdate} onNodeClick={handleClick} /> : <div>Waiting for data</div>
