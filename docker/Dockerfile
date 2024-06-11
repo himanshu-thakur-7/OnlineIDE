@@ -21,5 +21,3 @@ COPY web-socket-server .
 # Expose the port for socket.io server
 EXPOSE 6000
 
-
-CMD ["node", "index.js"]

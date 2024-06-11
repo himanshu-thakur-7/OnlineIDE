@@ -1,10 +1,12 @@
 const Docker = require('dockerode');
 const portfinder = require("portfinder");
+
+// Initialize variables
 const docker = new Docker();
-const pty = require('node-pty');
 
 const containers = {};
 
+// function to find 'count' number of available ports on the host machine
 async function findAvailablePorts(count) {
     const ports = [];
     portfinder.basePort = 7000; // starting point for the port search
@@ -17,12 +19,15 @@ async function findAvailablePorts(count) {
 
     return ports;
 }
+
+// function to fetch container info by name
 async function getContainerByName(containerName) {
     const containers = await docker.listContainers({ all: true });
     const containerInfo = containers.find(c => c.Names.includes(`/${containerName}`));
     return containerInfo ? docker.getContainer(containerInfo.Id) : null;
 }
 
+// function to check if a package is already installed in container
 async function isPackageInstalled(container, packageName) {
     if (packageName === 'react') packageName = "nodejs";
     const exec = await container.exec({
@@ -44,6 +49,7 @@ async function isPackageInstalled(container, packageName) {
     return !output.includes(`error: selector '${packageName}'`);
 }
 
+// function to install a package in the container 
 async function installPackage(container, packageName) {
     if (packageName === 'react') packageName = "nodejs";
     const exec = await container.exec({
@@ -65,6 +71,7 @@ async function installPackage(container, packageName) {
     }
 }
 
+// function to start the web server
 async function startWebServer(container) {
     const exec = await container.exec({
         AttachStdout: true,
@@ -78,17 +85,17 @@ async function startWebServer(container) {
 
 async function startContainer(containerName, env) {
 
-    // let ports = [];
     let ports = [];
     let container = await getContainerByName(containerName);
+    // If no container is present,create a new one
     if (!container) {
+        // get available ports
         ports = await findAvailablePorts(2);
 
-        console.log("PORTS::::", ports);
         container = await docker.createContainer({
             Image: 'my-nix-node-image',
             Tty: true,
-            Cmd: ['/bin/sh'], // Ensure the server starts directly
+            Cmd: ['/bin/sh'],
             name: containerName,
             HostConfig: {
                 SecurityOpt: ['seccomp=unconfined'],
@@ -115,24 +122,27 @@ async function startContainer(containerName, env) {
     } catch (e) {
         console.log(e.message);
     }
-
+    // check if environment is already set up in container, if not install it
     if (!await isPackageInstalled(container, env)) {
         await installPackage(container, env);
     } else {
         console.log(`Package ${env} already installed!`);
     }
+    // Start web socket server inside the container
     await startWebServer(container);
     const containerId = container.id;
+
     containers[containerId] = container;
 
+    // Get ports information from the container
     const data = await container.inspect();
     const webSocketPort = data.NetworkSettings.Ports['6000/tcp'] ? data.NetworkSettings.Ports['6000/tcp'][0].HostPort : -1;
     const devPort = data.NetworkSettings.Ports['3000/tcp'] ? data.NetworkSettings.Ports['3000/tcp'][0].HostPort : -1;
 
-    // console.log("PORTS:::", ports)
     return { containerId: containerId, webSocketPort: webSocketPort, devPort: devPort };
 }
 
+// function to stop and remove the container
 async function stopContainer(containerId) {
     const container = containers[containerId];
 
